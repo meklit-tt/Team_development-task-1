@@ -20,17 +20,21 @@ class AgendasController < ApplicationController
       render :new
     end
   end
-  def destroy
-    @agenda = Agenda.find(params[:id])
+
+    def destroy
     agenda_to_be_destroyed = @agenda
-    if @agenda.destroy
     if @agenda.present?
-      @agenda.destroy
-      TeamMailer.mail_after_destroy(agenda_to_be_destroyed).deliver
-      redirect_to dashboard_url
-      redirect_to dashboard_url, notice: "agenda destroyed"
+        @agenda.destroy
+        TeamMailer.mail_after_destroy(agenda_to_be_destroyed).deliver
+        team_id = agenda_to_be_destroyed.team_id
+        team_members = User.where(keep_team_id: team_id)
+        team_members.each do |member|
+        TeamMailer.mail_after_destroy(member).deliver
+        end
+        redirect_to dashboard_url, notice: "agenda destroyed"
+      end
     end
-  end
+
 
   private
 
@@ -41,5 +45,4 @@ class AgendasController < ApplicationController
   def agenda_params
     params.fetch(:agenda, {}).permit %i[title description , article]
   end
-end
 end

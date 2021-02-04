@@ -35,9 +35,10 @@
               <i class="fa fa-circle-o nav-icon"></i>
               <p>
                 <%= agenda.title %>
+               <% if current_user.id == @working_team.owner_id || current_user.id == agenda.user_id %>
                 <%= link_to I18n.t('views.button.delete'), agenda, method: :delete, data: { confirm: 'Are you sure?' }%>
-                <% if current_user.id == @working_team.owner_id || current_user.id == agenda.user_id %>
                 <i class="right fa fa-angle-left"></i>
+                <% end %>
               </p>
             </a>
             <ul class="nav nav-treeview" style="display: block;">
