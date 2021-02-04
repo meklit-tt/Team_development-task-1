@@ -39,6 +39,7 @@ class AgendasController < ApplicationController
   end
 
   def agenda_params
-    params.fetch(:agenda, {}).permit %i[title description]
+    params.fetch(:agenda, {}).permit %i[title description , article]
   end
+end
 end
