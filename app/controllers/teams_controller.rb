@@ -45,7 +45,7 @@ class TeamsController < ApplicationController
       render :edit
     end
   end
-
+end 
   def destroy
     @team.destroy
     redirect_to teams_url, notice: I18n.t('views.messages.delete_team')
