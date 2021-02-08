@@ -45,6 +45,7 @@
                       <% if current_user.id == @team.owner_id %>
                       <td><%= link_to I18n.t('views.button.change_authority'), owner_change_team_path(assign.user_id,@team.id),method: :put, class: 'btn btn-sm btn-info' %></td>
                     </tr>
+                    <% end %>
                   <% end %>
                 </tbody>
               </table>
