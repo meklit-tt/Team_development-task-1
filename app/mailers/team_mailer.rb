@@ -5,6 +5,7 @@ class TeamMailer < ApplicationMailer
       team_members.each do |member|
           mail(to: member.email, subject: `#{agenda.title}, has been destroyed`)
       end
+    end
   def mail_after_destroy(user)
       mail(to: user.email, subject: `the agenda has been destroyed`)
   end
