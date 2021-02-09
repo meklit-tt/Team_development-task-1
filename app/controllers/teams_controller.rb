@@ -45,7 +45,7 @@ class TeamsController < ApplicationController
       render :edit
     end
   end
-end 
+end
   def destroy
     @team.destroy
     redirect_to teams_url, notice: I18n.t('views.messages.delete_team')
@@ -59,7 +59,10 @@ end
       @new_owner = User.find(params[:id])
       @team.update_attributes(owner_id: @new_owner.id)
       redirect_to  @team, notice: I18n.t('views.messages.change_leader')
-    end
+      TeamOwnerMailer.mail_new_owner(@new_owner).deliver
+      end
+      #redirect_to  @team, notice: I18n.t('views.messages.change_leader')
+    #end
   private
 
   def set_team
