@@ -36,7 +36,6 @@ class AgendasController < ApplicationController
     end
   end
 
-
   private
 
   def set_agenda
