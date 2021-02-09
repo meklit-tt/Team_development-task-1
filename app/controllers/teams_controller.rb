@@ -32,12 +32,20 @@ class TeamsController < ApplicationController
   def update
     if @team.update(team_params)
       redirect_to @team, notice: I18n.t('views.messages.update_team')
+      if current_user.id == @team.owner_id
+     if @team.update(team_params)
+       redirect_to @team, notice: I18n.t('views.messages.update_team')
+     else
+       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
+       render :edit
+       redirect_to @team, notice: I18n.t('views.messages.not_authorized')
+     end
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :edit
     end
   end
-
+end
   def destroy
     @team.destroy
     redirect_to teams_url, notice: I18n.t('views.messages.delete_team')
@@ -46,7 +54,15 @@ class TeamsController < ApplicationController
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
-
+  def owner_change
+      @team = Team.friendly.find(params[:format])
+      @new_owner = User.find(params[:id])
+      @team.update_attributes(owner_id: @new_owner.id)
+      redirect_to  @team, notice: I18n.t('views.messages.change_leader')
+      TeamOwnerMailer.mail_new_owner(@new_owner).deliver
+      end
+      #redirect_to  @team, notice: I18n.t('views.messages.change_leader')
+    #end
   private
 
   def set_team
